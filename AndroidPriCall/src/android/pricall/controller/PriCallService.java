@@ -4,8 +4,13 @@
 package android.pricall.controller;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.IBinder;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 
 /**
  * @author Corne
@@ -13,16 +18,51 @@ import android.os.IBinder;
  */
 public class PriCallService extends Service {
 
+	private StateListener phoneStateListener;
+	private AudioManager audioManager;
+	
 	@Override
 	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
 		super.onCreate();
+		Log.i("SERVICE", "Service created");
+		audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+		phoneStateListener = new StateListener();
+        TelephonyManager telephonymanager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+        telephonymanager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
 	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		TelephonyManager telephonymanager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+        telephonymanager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
+    	audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+		Log.i("SERVICE", "Service destroyed");
+	}
+	
+	private class StateListener extends PhoneStateListener{
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
+            super.onCallStateChanged(state, incomingNumber);
+            
+            switch(state){
+                case TelephonyManager.CALL_STATE_RINGING:
+                	Log.i("SERVICE", "got called");          	
+                	audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                    break;
+                case TelephonyManager.CALL_STATE_OFFHOOK:                	
+                    break;
+                case TelephonyManager.CALL_STATE_IDLE:
+                	audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                    break;
+            }
+        }
+    };
+
 
 }
