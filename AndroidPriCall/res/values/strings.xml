@@ -5,5 +5,6 @@
     <string name="app_name">AndroidPriCall</string>
     
     <string name="app_status">PriCall</string>
+    <string name="contactlist_buttontext">Set priority callers</string>
 
 </resources>

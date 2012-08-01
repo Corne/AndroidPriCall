@@ -11,6 +11,7 @@ import android.pricall.R;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ToggleButton;
 
 /**
@@ -22,6 +23,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	private static final String TOGGLEBUTTONPREFERENCE = "ToggleButtonPreference";
 	
 	private ToggleButton activeStatusToggleButton;
+	private Button priorityContactButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +32,10 @@ public class SettingsActivity extends Activity implements OnClickListener {
 		
 		//get the objects from the view
 		activeStatusToggleButton = (ToggleButton) findViewById(R.id.app_status_togglebutton);
-		//set OnClickListener
+		priorityContactButton = (Button) findViewById(R.id.contactlistbutton);
+		//set OnClickListener for buttons
 		activeStatusToggleButton.setOnClickListener(this);
+		priorityContactButton.setOnClickListener(this);
 		//set 'saved' toggleButton value
 		SharedPreferences settings = getPreferences(0);
 		boolean checkedToggleButton = settings.getBoolean(TOGGLEBUTTONPREFERENCE, false);
@@ -62,6 +66,8 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		if(v.getId() == activeStatusToggleButton.getId()){
 			this.startPriCallService();
+		}else if(v.getId() == priorityContactButton.getId()){
+			this.startContactPriorityListactivity();
 		}
 	}
 	
@@ -73,5 +79,10 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			Log.i("SERVICE", "onClick: stopping service");
 			stopService(new Intent(this, PriCallService.class));
 		}
+	}
+	
+	private void startContactPriorityListactivity(){
+		Intent intent = new Intent(this, ContactPriorityListActivity.class);
+		startActivity(intent);
 	}
 }
