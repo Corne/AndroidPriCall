@@ -17,6 +17,7 @@ import android.widget.SimpleCursorAdapter;
  */
 public class ContactPriorityListActivity extends ListActivity {
 	
+	//@SuppressWarnings("deprecation") //should use suppresswarning for newer apk?
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -24,7 +25,7 @@ public class ContactPriorityListActivity extends ListActivity {
 		
 		Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
 				new String[] {Phone._ID, Phone.DISPLAY_NAME, Phone.NUMBER}, null, null,  Phone.DISPLAY_NAME + " ASC");
-        //Deprecated TODO fix
+        //Deprecated TODO check for fix, loadermanager is API level 11+, using 10 atm for own android version
 		startManagingCursor(cursor);
 
 		String[] from = new String[] { Phone.DISPLAY_NAME };
