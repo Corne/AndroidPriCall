@@ -3,11 +3,14 @@
  */
 package android.pricall.controller;
 
+import java.util.ArrayList;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.IBinder;
+import android.pricall.model.PriorityList;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -43,7 +46,8 @@ public class PriCallService extends Service {
         telephonymanager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
     	audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 		Log.i("SERVICE", "Service destroyed");
-	}
+	}	
+	
 	
 	private class StateListener extends PhoneStateListener{
         @Override
@@ -52,8 +56,10 @@ public class PriCallService extends Service {
             
             switch(state){
                 case TelephonyManager.CALL_STATE_RINGING:
-                	Log.i("SERVICE", "got called");          	
-                	audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                	Log.i("SERVICE", "got called");
+                	if(!callerIsPriCaller(incomingNumber)){
+                		audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                	}
                     break;
                 case TelephonyManager.CALL_STATE_OFFHOOK:                	
                     break;
@@ -61,8 +67,17 @@ public class PriCallService extends Service {
                 	audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                     break;
             }
-        }
+        }       
     };
 
+    private boolean callerIsPriCaller(String incomingNumber){
+    	PriorityList priListInstance = PriorityList.getInstance(this);
+    	ArrayList<String> priListPhoneNumbers = priListInstance.getPriorityPhoneNumbers();
+    	
+    	if(priListPhoneNumbers.contains(incomingNumber)){
+    		return true;
+    	}
+    	return false;
+    }
 
 }

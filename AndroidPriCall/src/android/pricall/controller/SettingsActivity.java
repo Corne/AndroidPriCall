@@ -20,6 +20,7 @@ import android.widget.ToggleButton;
  */
 public class SettingsActivity extends Activity implements OnClickListener {
 
+	private static final String SETTINGPREFERENCES = "SettingsPrefs";
 	private static final String TOGGLEBUTTONPREFERENCE = "ToggleButtonPreference";
 	
 	private ToggleButton activeStatusToggleButton;
@@ -37,7 +38,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 		activeStatusToggleButton.setOnClickListener(this);
 		priorityContactButton.setOnClickListener(this);
 		//set 'saved' toggleButton value
-		SharedPreferences settings = getPreferences(0);
+		SharedPreferences settings = getSharedPreferences(SETTINGPREFERENCES, 0);
 		boolean checkedToggleButton = settings.getBoolean(TOGGLEBUTTONPREFERENCE, false);
 		activeStatusToggleButton.setChecked(checkedToggleButton);
 		//make sure he activates again when button is checked on startup
@@ -48,7 +49,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	protected void onDestroy() {
 		super.onDestroy();
 		//Save ToggleButton value
-		SharedPreferences settings = getPreferences(0);
+		SharedPreferences settings = getSharedPreferences(SETTINGPREFERENCES, 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putBoolean(TOGGLEBUTTONPREFERENCE, activeStatusToggleButton.isChecked());
 		editor.commit();

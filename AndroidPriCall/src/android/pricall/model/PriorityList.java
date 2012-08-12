@@ -28,11 +28,11 @@ public class PriorityList extends Observable {
 	
 	private static PriorityList instance;
 	private Context context;
-	private ArrayList<String> prioritygroupList;
+	private ArrayList<Contact> prioritygroupList;
 	
 	private PriorityList(Context context) {
 		this.context = context;
-		prioritygroupList = new ArrayList<String>();
+		prioritygroupList = new ArrayList<Contact>();
 		this.getSavedPriorityList();
 	}
 	
@@ -51,7 +51,7 @@ public class PriorityList extends Observable {
     	try {
 			fis = context.openFileInput(PRIORITYFILENAME);
 			in = new ObjectInputStream(fis);
-			prioritygroupList = (ArrayList<String>) in.readObject();
+			prioritygroupList = (ArrayList<Contact>) in.readObject();
 			in.close();
 		} catch (StreamCorruptedException e) {
 			e.printStackTrace();
@@ -83,9 +83,29 @@ public class PriorityList extends Observable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		setChanged();
+    	notifyObservers();
 	}
 	
-	public ArrayList<String> getPriorityGroupList(){
+	public ArrayList<Contact> getPriorityGroupList(){
 		return prioritygroupList;
+	}
+	
+	public ArrayList<String> getPriorityPhoneNumbers(){
+		ArrayList<String> phoneNumbers = new ArrayList<String>();
+		for(int i=0; i < prioritygroupList.size(); i++){
+			phoneNumbers.add(prioritygroupList.get(i).getPhoneNumber());
+		}
+		return phoneNumbers;
+	}
+	
+	public void addPriorityCaller(Contact priCaller){
+		prioritygroupList.add(priCaller);
+		savePriorityList();
+	}
+	
+	public void removePriorityCaller(Contact priCaller){
+		prioritygroupList.remove(priCaller);
+		savePriorityList();
 	}
 }
