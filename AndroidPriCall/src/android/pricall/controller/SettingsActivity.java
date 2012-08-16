@@ -48,11 +48,6 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		//Save ToggleButton value
-		SharedPreferences settings = getSharedPreferences(SETTINGPREFERENCES, 0);
-		SharedPreferences.Editor editor = settings.edit();
-		editor.putBoolean(TOGGLEBUTTONPREFERENCE, activeStatusToggleButton.isChecked());
-		editor.commit();
 	}
 	
 	@Override
@@ -73,6 +68,8 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	}
 	
 	private void startPriCallService(){
+		saveStatusToggleButtonPreference();		
+		
 		if(activeStatusToggleButton.isChecked()){
 			Log.i("SERVICE", "onClick: starting service");
 			startService(new Intent(this, PriCallService.class));
@@ -80,6 +77,13 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			Log.i("SERVICE", "onClick: stopping service");
 			stopService(new Intent(this, PriCallService.class));
 		}
+	}
+	
+	private void saveStatusToggleButtonPreference(){
+		SharedPreferences settings = getSharedPreferences(SETTINGPREFERENCES, 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean(TOGGLEBUTTONPREFERENCE, activeStatusToggleButton.isChecked());
+		editor.commit();
 	}
 	
 	private void startContactPriorityListactivity(){

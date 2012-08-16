@@ -5,6 +5,9 @@ package android.pricall.controller;
 
 import java.util.ArrayList;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +27,8 @@ public class PriCallService extends Service {
 	private StateListener phoneStateListener;
 	private AudioManager audioManager;
 	
+	private NotificationManager notificationManager;
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -37,6 +42,21 @@ public class PriCallService extends Service {
 		phoneStateListener = new StateListener();
         TelephonyManager telephonymanager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
         telephonymanager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+        
+        //TODO create separate class for notification handling
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        int icon = android.R.drawable.ic_dialog_info;
+        String notificationMessage = "Pri Call Activated";
+
+        Notification notification = new Notification(icon, notificationMessage, System.currentTimeMillis());
+        Context context = getApplicationContext();
+        CharSequence contentTitle = "My notification";
+        CharSequence contentText = "Hello World!";
+        Intent notificationIntent = new Intent(this, SettingsActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+        notificationManager.notify(1, notification);
+        
 	}
 	
 	@Override
@@ -46,6 +66,8 @@ public class PriCallService extends Service {
         telephonymanager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
     	audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 		Log.i("SERVICE", "Service destroyed");
+		
+		notificationManager.cancel(1);
 	}	
 	
 	
@@ -67,7 +89,8 @@ public class PriCallService extends Service {
                 	audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                     break;
             }
-        }       
+        }
+        
     };
 
     private boolean callerIsPriCaller(String incomingNumber){

@@ -91,6 +91,14 @@ public class PriorityList extends Observable {
 		return prioritygroupList;
 	}
 	
+	public ArrayList<String> getPriorityCallersIDs(){
+		ArrayList<String> priCallIDs = new ArrayList<String>();
+		for(int i=0; i < prioritygroupList.size(); i++){
+			priCallIDs.add(prioritygroupList.get(i).getId());
+		}
+		return priCallIDs;
+	}
+	
 	public ArrayList<String> getPriorityPhoneNumbers(){
 		ArrayList<String> phoneNumbers = new ArrayList<String>();
 		for(int i=0; i < prioritygroupList.size(); i++){
@@ -105,7 +113,12 @@ public class PriorityList extends Observable {
 	}
 	
 	public void removePriorityCaller(Contact priCaller){
-		prioritygroupList.remove(priCaller);
-		savePriorityList();
+		for(int i=0; i<prioritygroupList.size(); i++){
+			if(priCaller.getId().equals(prioritygroupList.get(i).getId())){
+				prioritygroupList.remove(i);
+				savePriorityList();
+				break;
+			}
+		}
 	}
 }

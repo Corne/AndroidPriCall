@@ -65,7 +65,7 @@ public class ContactPriorityListActivity extends ListActivity {
 	}
 	
 	
-	
+	//TODO check if viewholder is really needed
 	/** Holds child views for one row. */  
 	private static class ContactViewHolder {  
 	    private CheckBox checkBox ;  
@@ -79,7 +79,7 @@ public class ContactPriorityListActivity extends ListActivity {
 	    	return checkBox;  
 	    }
 	    
-	    @SuppressWarnings("unused")
+		@SuppressWarnings("unused")
 		public void setCheckBox(CheckBox checkBox) {  
 	    	this.checkBox = checkBox;  
 	    } 
@@ -141,17 +141,17 @@ public class ContactPriorityListActivity extends ListActivity {
 		    else {  
 		    	// Because we use a ViewHolder, we avoid having to call findViewById().  
 		    	ContactViewHolder viewHolder = (ContactViewHolder) convertView.getTag();  
-		    	checkBox = viewHolder.getCheckBox() ;  
-		    	textView = viewHolder.getTextView() ;  
+		    	checkBox = viewHolder.getCheckBox();  
+		    	textView = viewHolder.getTextView();  
 		    }
 		    
-		    // Tag the CheckBox with the Planet it is displaying, so that we can  
-		    // access the planet in onClick() when the CheckBox is toggled.  
-		    checkBox.setTag( contact );   
-		        
-		    // Display planet data  
-		    //checkBox.setChecked( contact.isChecked() );  
-		    textView.setText( contact.getName() );
+		    // Tag the CheckBox with the Contact it is displaying, so that we can  
+		    // access the Contact in onClick() when the CheckBox is toggled.  
+		    checkBox.setTag(contact);   
+		    
+		    ArrayList<String> savedPriCallersIDs = PriorityList.getInstance(getContext()).getPriorityCallersIDs();
+		    checkBox.setChecked(savedPriCallersIDs.contains(contact.getId()));  
+		    textView.setText(contact.getName());
 		    
 			return convertView;
 		}
