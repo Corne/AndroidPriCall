@@ -4,7 +4,11 @@
     <string name="hello">Hello World!</string>
     <string name="app_name">AndroidPriCall</string>
     
+    <!-- settingsview Strings -->
     <string name="app_status">PriCall</string>
     <string name="contactlist_buttontext">Set priority callers</string>
-
+	
+	<string name="silence_preferences">Silence:</string>
+	<string name="silence_call_pref">Incoming calls</string>
+	<string name="silence_sms_pref">Incoming text messages</string>
 </resources>

@@ -39,7 +39,9 @@ public class PriCallService extends Service {
 		super.onCreate();
 		Log.i("SERVICE", "Service created");
 		audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+		
 		phoneStateListener = new StateListener();
+		
         TelephonyManager telephonymanager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
         telephonymanager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
         
