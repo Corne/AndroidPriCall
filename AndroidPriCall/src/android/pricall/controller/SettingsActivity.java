@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.pricall.R;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -25,6 +24,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	
 	private ToggleButton activeStatusToggleButton;
 	private Button priorityContactButton;
+	private Button timerSettingsButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +34,11 @@ public class SettingsActivity extends Activity implements OnClickListener {
 		//get the objects from the view
 		activeStatusToggleButton = (ToggleButton) findViewById(R.id.app_status_togglebutton);
 		priorityContactButton = (Button) findViewById(R.id.contactlistbutton);
+		timerSettingsButton = (Button) findViewById(R.id.timerSettingsButton);
 		//set OnClickListener for buttons
 		activeStatusToggleButton.setOnClickListener(this);
 		priorityContactButton.setOnClickListener(this);
+		timerSettingsButton.setOnClickListener(this);
 		//set 'saved' toggleButton value
 		SharedPreferences settings = getSharedPreferences(SETTINGPREFERENCES, 0);
 		boolean checkedToggleButton = settings.getBoolean(TOGGLEBUTTONPREFERENCE, false);
@@ -64,18 +66,18 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			this.startPriCallService();
 		}else if(v.getId() == priorityContactButton.getId()){
 			this.startContactPriorityListactivity();
+		}else if(v.getId() == timerSettingsButton.getId()){
+			this.startTimerSettingsActivity();
 		}
 	}
 	
 	private void startPriCallService(){
 		saveStatusToggleButtonPreference();		
-		
+		Intent serviceIntent = new Intent(this, PriCallService.class);
 		if(activeStatusToggleButton.isChecked()){
-			Log.i("SERVICE", "onClick: starting service");
-			startService(new Intent(this, PriCallService.class));
+			startService(serviceIntent);
 		}else{
-			Log.i("SERVICE", "onClick: stopping service");
-			stopService(new Intent(this, PriCallService.class));
+			stopService(serviceIntent);
 		}
 	}
 	
@@ -88,6 +90,11 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	
 	private void startContactPriorityListactivity(){
 		Intent intent = new Intent(this, ContactPriorityListActivity.class);
+		startActivity(intent);
+	}
+	
+	private void startTimerSettingsActivity(){
+		Intent intent = new Intent(this, TimerSettingsActivity.class);
 		startActivity(intent);
 	}
 }

@@ -24,13 +24,8 @@
         </activity>
         <service android:enabled="true" android:name=".controller.PriCallService" />  
         
-        <receiver android:name=".controller.SmsListener">
- 			<intent-filter android:priority="100">
-    			<action android:name="android.provider.Telephony.SMS_RECEIVED" />
-  			</intent-filter>
-		</receiver>
-        
         <activity android:name=".controller.ContactPriorityListActivity"></activity>
+        <activity android:name=".controller.TimerSettingsActivity"></activity>
     </application>
 
 </manifest>

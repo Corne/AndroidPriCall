@@ -49,8 +49,14 @@
     
     <Button
         android:id="@+id/contactlistbutton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/contactlist_buttontext" />
+
+    <Button
+        android:id="@+id/timerSettingsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/timersettings_buttontext" />
 
 </LinearLayout>
