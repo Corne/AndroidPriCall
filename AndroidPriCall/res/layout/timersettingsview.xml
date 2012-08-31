@@ -1,21 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
 
-    <TimePicker
-        android:id="@+id/timerTimePicker"
+    <EditText
+        android:id="@+id/timertitle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:inputType="textShortMessage" />
+
+    <android.pricall.view.TimerButton
+        android:id="@+id/starttimebutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timertitle"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="44dp"
+        android:text="@string/starttime_buttontext" />
+
+    <android.pricall.view.TimerButton
+        android:id="@+id/endtimebutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/starttimebutton"
+        android:layout_alignBottom="@+id/starttimebutton"
+        android:layout_alignRight="@+id/timertitle"
+        android:text="@string/endtime_buttontext" />
 
     <ToggleButton
         android:id="@+id/timerStatusToggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/endtimebutton"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="18dp" />
-    
+        android:layout_marginRight="16dp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/timertitle"
+        android:textSize="16dp" />
+
 </RelativeLayout>
